@@ -12,6 +12,9 @@ My primary focus was on ensuring code clarity, cleanliness, and establishing a r
    - Application Robustness: While I acknowledge that the application may lack robustness and could potentially have issues with various corner cases,
      my primary objective was to demonstrate my approach to code design. Regrettably, given the scope of the task, robustness had to be sacrificed.
 
+   - I did not set up Azure, and all connection strings are taken from appsettings.json. Given more time, I would have hosted the application
+     in Azure and used Azure Key Vault.
+
 # Areas for Improvement:
    - Auditing Approach: While I believe my approach to auditing is sound, setting the HttpRequestType from EntityState may not be the most optimal solution.
      In a real-world scenario, I would prefer implementing auditing via an ActionFilterAttribute on the API endpoint and perform the audit database call
