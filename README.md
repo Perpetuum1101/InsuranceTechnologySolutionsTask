@@ -1,64 +1,43 @@
-# Read this first!
-This repository is a template repository for our technical interview, so create your own project using this guide:
+My primary focus was on ensuring code clarity, cleanliness, and establishing a robust infrastructure.
 
-[GitHub - Creating a repository from a template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+# Tasks I Didn't Have Time to Address:
+   - Integration Testing: Unfortunately, due to time constraints, I had to skip this part entirely. Given more time,
+     I would have set up an SQLite database and implemented integration tests to ensure that API endpoints return the expected results.
+     For instance, verifying that a GET request with a specific ID returns the corresponding DTO with the same ID.
 
-An alternative is to download the code and create a new repository using a different VCS provider (gitlab / Azure repos). **Do not fork this repository.**
+   - Exception Handling: Similarly, I had to forgo implementing proper exception handling. Given more time,
+     I would have created custom exceptions within the Domain layer. Subsequently, I would add an Exception Handling middleware to return
+     appropriate messages and status codes based on the encountered exceptions.
 
-When you have completed the tasks, please share the repository link with us. We will review your submission before the interview.
+   - Application Robustness: While I acknowledge that the application may lack robustness and could potentially have issues with various corner cases,
+     my primary objective was to demonstrate my approach to code design. Regrettably, given the scope of the task, robustness had to be sacrificed.
 
-Good luck! 😊
+# Areas for Improvement:
+   - Auditing Approach: While I believe my approach to auditing is sound, setting the HttpRequestType from EntityState may not be the most optimal solution.
+     In a real-world scenario, I would prefer implementing auditing via an ActionFilterAttribute on the API endpoint and perform the audit database call
+     in a similar manner. Additionally, with a well-designed audit database schema and some adjustments to the current approach,
+     it's feasible to automate auditing without the need for code changes when introducing new entities.
 
-# Prerequisites
+   - Unit Testing: There is room for improvement in unit tests. Utilizing Fluent Validation, employing better naming conventions,
+     and avoiding hard-coded percentages would enhance the robustness and maintainability of the tests.
 
-- Your favourite IDE to code in C# 😊
-- _Optional_ - an Azure Subscription. You can demo this API by hosting it in Azure. If that is not an option for you, you can run the demo having a locally running instance. If you select a different cloud provider, that is fine for us.
-- `Docker` and `docker-compose`
+   - Documentation: Admittedly, documentation could be more comprehensive. Clearer documentation is easier to produce when the domain is well understood,
+     and the team has established guidelines. Given more time, I would have invested in enhancing documentation quality.
 
-Use `$ docker-compose up --detach` to start the containers with dependencies. The existing code base is preconfigured to work with these containers.
-There are no volumes setup for any of the storage, so when you `docker-compose down` these storage media *WILL NOT BE PERSISTED*.
+   - Logging: While I recognize the importance of logging, I didn't have sufficient time to implement an extensive logging solution. In future iterations,
+     I would aim to automate logging wherever possible and appropriate.
 
-> **Disclaimer**
-> 
-> As you can see - a DB password is committed to the `appsettings.json` file. However, these secrets are just for development dependencies. If you deploy
-> the application into the cloud, we expect that you make use of an alternate method of storing secrets.
+   - Validation: Improvements could be made to validation messages and error handling. Leveraging Fluent Validation to set error codes alongside messages
+     would enable more effective handling of validation errors.
 
-# Programming Task
-Complete the backend for a multi-tier application for Insurance Claims Handling.
-The use case is to maintain a list of insurance claims. The user should be able to create, delete and read claims.
-## Task 1
-The codebase is messy:
-* The controller has too much responsibility. 
-* Introduce proper layering within the codebase. 
-* Documentation is missing.
-* ++
+   - Premium Calculation: Although the premium calculation solution implemented is extensible and adaptable to changing business logic, there is room
+     for enhancement. Storing calculation parameters in a database or configuration file would improve flexibility. Additionally,
+     the code could be further refined to accommodate different base rates for various vessel types.
 
-Adhere to the SOLID principles.
+# Areas I Consider Successful:
+   - Architecture: I am confident that the application is structured according to Clean Architecture guidelines, facilitating maintainability and scalability.
 
-### Task 2
-As you can see, the API supports some basic REST operations. But validation is missing. The basic rules are:
+   - Premium Calculation and Auditing: Despite not being perfect, the premium calculation and auditing functionalities demonstrate a promising initial approach.
+     They lay the groundwork for solutions that can adapt to evolving business logic without necessitating code changes.
 
-* Claim
-  * DamageCost cannot exceed 100.000
-  * Created date must be within the period of the related Cover
-* Cover
-  * StartDate cannot be in the past
-  * total insurance period cannot exceed 1 year
-
-## Task 3
-Auditing. The basics are there, but the execution of the DB command (INSERT & DELETE) blocks the processing of the HTTP request. How can this be improved? Look into some asynchronous patterns. It is ok to introduce an Azure managed service to help you with this (ServiceBus/EventGrid/Whatever), but that is not required. Whatever you can manage to get working which is in-memory is also ok.
-
-## Task 4
-One basic test is included, please add other (mandatory) unit tests. Note: If you start on this task first, you will find it hard to write proper tests. Some refactoring of the Claims API will be needed. 
-
-## Task 5
-Cover premium computation formula evolved over time. Fellow developers were lazy and omitted all tests. Now there are a couple of bugs. Can you fix them? Can you make the computation more readable?
-
-Desired logic: 
-* Premium depends on the type of the covered object and the length of the insurance period. 
-* Base day rate was set to be 1250.
-* Yacht should be 10% more expensive, Passenger ship 20%, Tanker 50%, and other types 30%
-* The length of the insurance period should influence the premium progressively:
-  * First 30 days are computed based on the logic above
-  * Following 150 days are discounted by 5% for Yacht and by 2% for other types
-  * The remaining days are discounted by additional 3% for Yacht and by 1% for other types
+   - Abstractions and Extensibility: I made effective use of abstractions and ensured code extensibility and granularity, which are crucial for long-term maintainability and scalability.
