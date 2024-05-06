@@ -1,0 +1,16 @@
+﻿using Domain.Types;
+
+namespace Domain.Entities;
+
+public  class Audit
+{
+    public int Id { get; set; }
+
+    public string? AuditedEntityId { get; set; }
+
+    public DateTime Created { get; set; }
+
+    public string? HttpRequestType { get; set; }
+
+    public AuditEntityType  Type { get; set; }
+}
