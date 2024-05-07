@@ -1,9 +1,7 @@
 My primary focus was on ensuring code clarity, cleanliness, and establishing a robust infrastructure.
 
 # Tasks I Didn't Have Time to Address:
-   - Integration Testing: Unfortunately, due to time constraints, I had to skip this part entirely. Given more time,
-     I would have set up an SQLite database and implemented integration tests to ensure that API endpoints return the expected results.
-     For instance, verifying that a GET request with a specific ID returns the corresponding DTO with the same ID.
+   - Integration Testing: Unfortunately, due to time constraints, integration testing only covers success cases.
 
    - Exception Handling: Similarly, I had to forgo implementing proper exception handling. Given more time,
      I would have created custom exceptions within the Domain layer. Subsequently, I would add an Exception Handling middleware to return
