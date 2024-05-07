@@ -37,8 +37,8 @@ public class CoverService(
         { CoverType.PassengerShip, new List<Discount>
         {
             new(30, 150, 0.02m),
-            new(180, 365, 0.03m) }
-        },
+            new(180, 365, 0.03m) 
+        } },
         { CoverType.Tanker, new List<Discount>
         {
             new(30, 150, 0.02m),
@@ -47,13 +47,13 @@ public class CoverService(
         { CoverType.BulkCarrier, new List<Discount>
         {
             new(30, 150, 0.02m),
-            new(180, 365, 0.03m) }
-        },
+            new(180, 365, 0.03m) 
+        } },
         { CoverType.ContainerShip, new List<Discount>
         {
             new(30, 150, 0.02m),
-            new(180, 365, 0.03m) }
-        },
+            new(180, 365, 0.03m) 
+        } },
     };
 
     public decimal ComputePremium(ComputePremiumDTO computeDTO)

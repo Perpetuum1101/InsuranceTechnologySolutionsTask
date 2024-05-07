@@ -40,7 +40,7 @@ internal class UnitOfWork(ClaimsContext claims) : IUnitOfWork
                                         x.State == EntityState.Added)
                             .Select(x => new AuditEntryDTO
                             {
-                                Timestamp = DateTime.Now,
+                                Timestamp = DateTime.UtcNow,
                                 HttpRequestType = HttpRequestTypeByEntityState(x.State),
                                 EntityId = x.Entity.Id.ToString(),
                                 Type = x.Entity.GetType()

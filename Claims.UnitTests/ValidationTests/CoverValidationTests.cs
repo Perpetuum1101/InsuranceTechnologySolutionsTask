@@ -7,7 +7,7 @@ namespace Claims.UnitTests.ValidationTests;
 public class CoverValidationTests
 {
     private CoverValidator _coverValidator;
-    private DateTime _now = DateTime.Now;
+    private DateTime _now = DateTime.UtcNow;
 
     public CoverValidationTests()
     {

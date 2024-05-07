@@ -75,6 +75,4 @@ public class CoversController(ICoverService coverService) : ControllerBase
         await _coverService.Delete(Guid.Parse(id));
         return Ok();
     }
-
-    
 }

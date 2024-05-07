@@ -48,9 +48,10 @@ namespace Claims.Controllers
         /// <param name="id">GUID as string</param>
         /// <returns>Status code 200 if delete was successful</returns>
         [HttpDelete("{id}")]
-        public async Task DeleteAsync(string id)
+        public async Task<ActionResult> DeleteAsync(string id)
         {
             await _claimService.Delete(Guid.Parse(id));
+            return Ok();
         }
 
 
@@ -62,7 +63,8 @@ namespace Claims.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ClaimDTO>> GetAsync(string id)
         {
-            return await _claimService.Get(Guid.Parse(id));
+            var result = await _claimService.Get(Guid.Parse(id));
+            return Ok(result);
         }
     }
 }
