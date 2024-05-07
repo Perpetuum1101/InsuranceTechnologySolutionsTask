@@ -11,7 +11,6 @@ using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
-
 namespace Infrastructure;
 
 public static class Bootstrap
@@ -26,11 +25,13 @@ public static class Bootstrap
         services.AddScoped<ICoverRepository, CoverRepository>();
         services.AddScoped<IAuditRepository, AuditRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
+        services.AddSingleton(new CustomConfiguration(false));
         services.AddDbContext<AuditContext>(options => options.UseSqlServer(sqlConnectionSting));
+        services.AddScoped<IMongoClient, MongoClient>(_ => new MongoClient(mongoConnectionString));
         services.AddDbContext<ClaimsContext>(
-            options =>
+            (ser, options) =>
             {
-                var client = new MongoClient(mongoConnectionString);
+                var client = ser.GetService<IMongoClient>()!;
                 var database = client.GetDatabase(mongoDbName);
                 options.UseMongoDB(database.Client, database.DatabaseNamespace.DatabaseName);
             }
@@ -44,26 +45,34 @@ public static class Bootstrap
 
     public static void MigrateContext(this IServiceProvider services)
     {
-        using (var scope = services.CreateScope())
+        var configuration = services.GetRequiredService<CustomConfiguration>();
+        if (!configuration.IsIntegrationTesting)
         {
-            var context = scope.ServiceProvider.GetRequiredService<AuditContext>();
-            context.Database.Migrate();
-        }
+            using (var scope = services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<AuditContext>();
+                if (context.Database.IsSqlServer())
+                {
+                    context.Database.Migrate();
+                }
+            }
 
-        BsonClassMap.RegisterClassMap<Claim>(cm =>
-        {
-            cm.AutoMap();
-            cm.MapMember(c => c.Created).SetSerializer(new DateTimeSerializer(dateOnly: true));
-            cm.MapIdMember(c => c.Id)
-              .SetIdGenerator(CombGuidGenerator.Instance);
-        });
-        BsonClassMap.RegisterClassMap<Cover>(cm =>
-        {
-            cm.AutoMap();
-            cm.MapMember(c => c.StartDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
-            cm.MapMember(c => c.EndDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
-            cm.MapIdMember(c => c.Id)
-              .SetIdGenerator(CombGuidGenerator.Instance);
-        });
+            BsonClassMap.RegisterClassMap<Cover>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapMember(c => c.StartDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
+                cm.MapMember(c => c.EndDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
+                cm.MapIdMember(c => c.Id)
+                    .SetIdGenerator(CombGuidGenerator.Instance);
+            });
+
+            BsonClassMap.RegisterClassMap<Claim>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapMember(c => c.Created).SetSerializer(new DateTimeSerializer(dateOnly: true));
+                cm.MapIdMember(c => c.Id)
+                  .SetIdGenerator(CombGuidGenerator.Instance);
+            });
+        }
     }
 }

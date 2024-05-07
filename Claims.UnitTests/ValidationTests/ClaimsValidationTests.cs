@@ -29,7 +29,7 @@ public class ClaimsValidationTests
             EndDate = _now.AddDays(1),
             StartDate = _now.AddDays(-1)
         });
-        var dto = new ClaimDTO(Guid.Empty, guid, _now, "Test", ClaimType.Fire, 120000);
+        var dto = new ClaimDTO(null, guid, _now, "Test", ClaimType.Fire, 120000);
 
         // Act
         var result = await  _claimsValidator.ValidateAsync(dto);
@@ -52,7 +52,7 @@ public class ClaimsValidationTests
             EndDate = _now.AddDays(1),
             StartDate = _now.AddDays(-1)
         });
-        var dto = new ClaimDTO(Guid.Empty, guid, _now, "Test", ClaimType.Fire, 99999);
+        var dto = new ClaimDTO(null, guid, _now, "Test", ClaimType.Fire, 99999);
 
         // Act
         var result = await _claimsValidator.ValidateAsync(dto);
@@ -71,7 +71,7 @@ public class ClaimsValidationTests
             EndDate = _now.AddDays(1),
             StartDate = _now.AddDays(-1)
         });
-        var dto = new ClaimDTO(Guid.Empty, guid, _now.AddDays(-3), "Test", ClaimType.Fire, 75);
+        var dto = new ClaimDTO(null, guid, _now.AddDays(-3), "Test", ClaimType.Fire, 75);
 
         // Act
         var result = await _claimsValidator.ValidateAsync(dto);
@@ -94,7 +94,7 @@ public class ClaimsValidationTests
             EndDate = _now.AddDays(1),
             StartDate = _now.AddDays(-1)
         });
-        var dto = new ClaimDTO(Guid.Empty, guid, _now, "Test", ClaimType.Fire, 75);
+        var dto = new ClaimDTO(null, guid, _now, "Test", ClaimType.Fire, 75);
 
         // Act
         var result = await _claimsValidator.ValidateAsync(dto);
